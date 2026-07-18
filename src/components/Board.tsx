@@ -1,5 +1,5 @@
 import React from 'react'
-import { createInitialBoard } from '../utils/initialBoard'
+import { useGameStore } from '../store/gameStore'
 
 const CELL_SIZE = 20
 
@@ -16,7 +16,7 @@ function getPlayerColor(cell: number): string {
 }
 
 function Board() {
-    const board = createInitialBoard()
+    const { board, selectedPosition, possibleMoves, selectPiece, movePiece } = useGameStore()
     
     const circles: React.ReactElement[] = []
     
@@ -26,6 +26,9 @@ function Board() {
             
             const x = colIndex * CELL_SIZE / 2
             const y = rowIndex * CELL_SIZE * 0.866
+
+            const isSelected = selectedPosition?.row === rowIndex && selectedPosition?.col === colIndex
+            const isPossibleMove = possibleMoves.some(m => m.row === rowIndex && m.col === colIndex)
             
             circles.push(
                 <circle
@@ -33,11 +36,18 @@ function Board() {
                     cx={x}
                     cy={y}
                     r={CELL_SIZE / 2 - 2}
-                    fill={getPlayerColor(cell)}
-                />
-            )
+                    fill={isSelected ? 'white' : isPossibleMove ? 'yellow' : getPlayerColor(cell)}
+                        onClick={ () => { if (possibleMoves.some(m => m.row === rowIndex && m.col === colIndex)) {
+                            movePiece({ row: rowIndex, col: colIndex })
+                        } else {
+                            selectPiece({ row: rowIndex, col: colIndex })
+                        } 
+                    }}
+                        style={{ cursor: 'pointer' }}
+                    />
+                )
+            })
         })
-    })
     
     return (
         <svg width={300} height={320} className="bg-gray-800">
