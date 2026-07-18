@@ -18,7 +18,18 @@ export function createInitialBoard(): Board {
     startCol = 0; endCol = 24
     for (let row = 4; row < 9; row++) {
         for (let col = startCol; col <= endCol; col += 2) {
-            board[row][col] = 0  // case vide
+            // 4 premières cases → joueur 6 (gauche haut)
+            if (col < startCol + 8) {
+                board[row][col] = 6
+            }
+            // 4 dernières cases → joueur 2 (droite haut)
+            else if (col > endCol - 8) {
+                board[row][col] = 2
+            }
+            // milieu → vide
+            else {
+                board[row][col] = 0
+            }
         }
         startCol += 1
         endCol -= 1
@@ -28,7 +39,18 @@ export function createInitialBoard(): Board {
     startCol = 3; endCol = 21
     for (let row = 9; row < 13; row++) {
         for (let col = startCol; col <= endCol; col += 2) {
-            board[row][col] = 0
+            // 4 premières cases → joueur 5 (gauche bas)
+            if (col < startCol + 8) {
+                board[row][col] = 5
+            }
+            // 4 dernières cases → joueur 3 (droite bas)
+            else if (col > endCol - 8) {
+                board[row][col] = 3
+            }
+            // milieu → vide
+            else {
+                board[row][col] = 0
+            }
         }
         startCol -= 1
         endCol += 1

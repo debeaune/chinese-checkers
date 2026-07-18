@@ -3,6 +3,18 @@ import { createInitialBoard } from '../utils/initialBoard'
 
 const CELL_SIZE = 20
 
+function getPlayerColor(cell: number): string {
+    switch(cell) {
+        case 1: return '#FF0000'  // rouge
+        case 2: return '#0000FF'  // bleu
+        case 3: return '#00AA00'  // vert
+        case 4: return '#FFD700'  // jaune
+        case 5: return '#FF8C00'  // orange
+        case 6: return '#8B00FF'  // violet
+        default: return '#555'    // gris (vide)
+    }
+}
+
 function Board() {
     const board = createInitialBoard()
     
@@ -21,7 +33,7 @@ function Board() {
                     cx={x}
                     cy={y}
                     r={CELL_SIZE / 2 - 2}
-                    fill={cell === 0 ? '#555' : cell === 1 ? 'red' : 'blue'}
+                    fill={getPlayerColor(cell)}
                 />
             )
         })
