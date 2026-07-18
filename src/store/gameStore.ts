@@ -1,13 +1,14 @@
 import { create } from 'zustand'
 import type { Board, Position, Player } from '../types/game'
 import { createInitialBoard } from '../utils/initialBoard'
-import { getAllMoves } from '../utils/moves'
+import { getAllMoves, checkWinner } from '../utils/moves'
 
 interface GameState {
     board: Board
     currentPlayer: Player
     selectedPosition: Position | null
     possibleMoves: Position[]
+    winner: Player | null
 }
 
 interface GameActions {
@@ -21,6 +22,7 @@ export const useGameStore = create<GameState & GameActions>((set) => ({
     currentPlayer: 1,
     selectedPosition: null,
     possibleMoves: [],
+    winner: null,
 
     selectPiece: (position) => set((state) => {
         const cell = state.board[position.row][position.col]
@@ -47,11 +49,14 @@ export const useGameStore = create<GameState & GameActions>((set) => ({
 
         const nextPlayer = (currentPlayer % 6) + 1 as Player
 
+        const winner = checkWinner(newBoard, currentPlayer) ? currentPlayer : null
+
         return {
             board: newBoard,
             selectedPosition: null,
             possibleMoves: [],
-            currentPlayer: nextPlayer
+            currentPlayer: nextPlayer,
+            winner
         }
     }),
 
@@ -60,5 +65,6 @@ export const useGameStore = create<GameState & GameActions>((set) => ({
         currentPlayer: 1,
         selectedPosition: null,
         possibleMoves: [],
+        winner : null,
     }),
 }))

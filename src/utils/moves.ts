@@ -1,4 +1,4 @@
-import type { Board, Position } from '../types/game'
+import type { Board, Position, Player } from '../types/game'
 
 const DIRECTIONS = [
     { row: -1, col: -1 }, // nord-ouest
@@ -66,4 +66,35 @@ export function getAllMoves(board: Board, position: Position): Position[] {
     const simpleMoves = getSimpleMoves(board, position)
     const jumpMoves = getJumpMoves(board, position)
     return [...simpleMoves, ...jumpMoves]
+}
+
+export function checkWinner(board: Board, player: Player): boolean {
+    // Zones d'arrivée selon le joueur
+    if (player === 1) {
+        // Joueur 1 doit avoir ses 10 pièces dans les rangées 13-16
+        let startCol = 9, endCol = 15
+        for (let row = 13; row < 17; row++) {
+            for (let col = startCol; col <= endCol; col += 2) {
+                if (board[row][col] !== 1) return false
+            }
+            startCol += 1
+            endCol -= 1
+        }
+        return true
+    }
+    
+    if (player === 4) {
+        // Joueur 4 doit avoir ses 10 pièces dans les rangées 0-3
+        let startCol = 12, endCol = 12
+        for (let row = 0; row < 4; row++) {
+            for (let col = startCol; col <= endCol; col += 2) {
+                if (board[row][col] !== 4) return false
+            }
+            startCol -= 1
+            endCol += 1
+        }
+        return true
+    }
+    
+    return false
 }

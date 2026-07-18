@@ -4,7 +4,7 @@ import Board  from './components/Board'
 const PLAYER_COLORS = ['', 'red', 'blue', 'green', 'gold', 'orange', 'purple']
 
 function App() {
-  const { currentPlayer, resetGame } = useGameStore()
+  const { currentPlayer, resetGame, winner} = useGameStore()
   
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center gap-4">
@@ -22,6 +22,11 @@ function App() {
             >
                 🔄 Nouvelle partie
             </button>
+            {winner && (
+              <div className="text-white text-2xl font-bold animate-pulse">
+                🎉 Joueur {winner} a gagné !
+              </div>
+            )}
         </div>
         <Board />
     </div>
